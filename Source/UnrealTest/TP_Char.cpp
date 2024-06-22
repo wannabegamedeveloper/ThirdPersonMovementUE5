@@ -37,6 +37,26 @@ void ATP_Char::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	FVector startLocation = GetActorLocation() + 
+		(GetActorForwardVector() * lineTraceStartDistance);
+
+	if (showDebugRay)
+	{
+		DrawDebugLine(GetWorld(), startLocation,
+			(GetActorForwardVector() * lineTraceDistance) + startLocation,
+			FColor::Red, false, .1f, 0, 5.f);
+	}
+
+	FHitResult hit;
+	
+	FCollisionQueryParams collisionParams;
+	if (GetWorld()->LineTraceSingleByChannel(hit, startLocation,
+		(GetActorForwardVector() * lineTraceDistance) + startLocation, ECC_WorldStatic, collisionParams))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 1.f,
+			FColor::Red, FString::Printf(TEXT("Collided with %s"),
+				*hit.GetActor()->GetName()));
+	}
 }
 
 // Called to bind functionality to input

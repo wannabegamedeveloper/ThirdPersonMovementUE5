@@ -24,6 +24,15 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Player");
 	bool invertAxis;
 
+	UPROPERTY(EditDefaultsOnly)
+	float lineTraceDistance = 100.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float lineTraceStartDistance = 100.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	bool showDebugRay;
+
 public:
 	// Sets default values for this character's properties
 	ATP_Char();

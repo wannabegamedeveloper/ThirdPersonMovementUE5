@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Camera/CameraComponent.h"
+#include "Bullet.h"
 #include "GameFramework/SpringArmComponent.h"
 
 #include "MainMover.generated.h"
@@ -27,6 +28,12 @@ private:
 	UPROPERTY(EditAnywhere)
 	bool invertAxis = false;
 
+	UPROPERTY(EditAnywhere)
+	float jumpForce = 200.f;
+
+	UPROPERTY(EditAnywhere, Category = "Shooting")
+	TSubclassOf<ABullet> bulletClass;
+
 public:
 	// Sets default values for this pawn's properties
 	AMainMover();
@@ -44,6 +51,11 @@ public:
 
 	void MoveForward(float value);
 	void MoveRight(float value);
+
 	void Turn(float value);
 	void LookUp(float value);
+
+	void Jump();
+
+	void Shoot();
 };

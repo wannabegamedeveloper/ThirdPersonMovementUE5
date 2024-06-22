@@ -53,12 +53,42 @@ void AMainMover::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 	PlayerInputComponent->BindAxis("Turn", this, &AMainMover::Turn);
 	PlayerInputComponent->BindAxis("LookUp", this, &AMainMover::LookUp);
+
+	PlayerInputComponent->BindAction("Jump", IE_Pressed,
+		this, &AMainMover::Jump);
+
+	PlayerInputComponent->BindAction("Shoot", IE_Pressed,
+		this, &AMainMover::Shoot);
+}
+
+void AMainMover::Shoot()
+{
+	if (bulletClass == nullptr) return;
+	FActorSpawnParameters spawnParams;
+	spawnParams.SpawnCollisionHandlingOverride = 
+		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	spawnParams.bNoFail = true;
+	spawnParams.Owner = this;
+	spawnParams.Instigator = this;
+
+	FTransform bulletTransform;
+	bulletTransform.SetLocation(GetActorLocation() + 
+		GetActorForwardVector() * 500.f);
+	bulletTransform.SetRotation(GetActorRotation().Quaternion());
+	bulletTransform.SetScale3D(FVector(1.f));
+
+	GetWorld()->SpawnActor<ABullet>(bulletClass, bulletTransform, spawnParams);
+}
+
+void AMainMover::Jump()
+{
+	cubeMesh->BodyInstance.SetLinearVelocity(FVector::UpVector * jumpForce, 
+		false);
 }
 
 void AMainMover::MoveForward(float value)
 {
 	AddMovementInput(GetActorForwardVector(), value);
-	
 }
 
 void AMainMover::MoveRight(float value)

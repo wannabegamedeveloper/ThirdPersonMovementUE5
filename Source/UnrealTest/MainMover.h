@@ -15,10 +15,11 @@ class UNREALTEST_API AMainMover : public APawn
 {
 	GENERATED_BODY()
 
-private:
+public:
 	UPROPERTY(EditAnywhere)
-	UStaticMeshComponent* cubeMesh;
+		UStaticMeshComponent* cubeMesh;
 
+private:
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* cameraComp;
 

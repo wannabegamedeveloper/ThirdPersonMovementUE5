@@ -13,5 +13,13 @@ UCLASS()
 class UNREALTEST_API ADefGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+public:
+	ADefGameModeBase();
+	
+	void OnTargetHit();
+
+	UPROPERTY(EditAnywhere, Category = "Game Rules")
+	int pointsToWin;
 	
 };

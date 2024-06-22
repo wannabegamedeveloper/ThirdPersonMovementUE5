@@ -47,5 +47,7 @@ void ABullet::OnCollision(AActor* SelfActor, AActor* OtherActor, FVector NormalI
 			enemy->Destroy();
 		}
 	}
+
+	Destroy();
 }
 

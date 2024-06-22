@@ -13,7 +13,6 @@ void ADefGameModeBase::OnTargetHit()
 {
 	if (ADefGameState* gameState = Cast<ADefGameState>(GameState))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("HIT"))
 		gameState->currentPoints++;
 
 		if (gameState->currentPoints >= pointsToWin)

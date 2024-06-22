@@ -3,7 +3,6 @@
 
 #include "MainMover.h"
 #include "Components/InputComponent.h"
-#include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
@@ -12,7 +11,7 @@ AMainMover::AMainMover()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	CreateDefaultSubobject<UFloatingPawnMovement>("PawnMovement");
+	pawn = CreateDefaultSubobject<UFloatingPawnMovement>("PawnMovement");
 
 	cubeMesh = CreateDefaultSubobject<UStaticMeshComponent>("Cube");
 	SetRootComponent(cubeMesh);
@@ -26,6 +25,8 @@ AMainMover::AMainMover()
 
 	bUseControllerRotationYaw = true;
 	springArm->bUsePawnControlRotation = true;
+
+	OnActorHit.AddDynamic(this, &AMainMover::OnCollision);
 }
 
 // Called when the game starts or when spawned
@@ -38,6 +39,15 @@ void AMainMover::BeginPlay()
 void AMainMover::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (pawn->IsFalling())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("FALLING"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("FALLEN"));
+	}
 
 }
 
@@ -80,10 +90,18 @@ void AMainMover::Shoot()
 	GetWorld()->SpawnActor<ABullet>(bulletClass, bulletTransform, spawnParams);
 }
 
+void AMainMover::OnCollision(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
+{
+
+}
+
 void AMainMover::Jump()
 {
-	cubeMesh->BodyInstance.SetLinearVelocity(FVector::UpVector * jumpForce, 
-		false);
+	if (FMath::IsNearlyEqual(FMath::Abs(GetVelocity().Z), 0.f))
+	{
+		cubeMesh->BodyInstance.SetLinearVelocity(FVector::UpVector * jumpForce,
+			false);
+	}
 }
 
 void AMainMover::MoveForward(float value)

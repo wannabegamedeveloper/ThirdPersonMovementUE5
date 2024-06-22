@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "Camera/CameraComponent.h"
 #include "Bullet.h"
+#include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/SpringArmComponent.h"
 
 #include "MainMover.generated.h"
@@ -17,7 +18,7 @@ class UNREALTEST_API AMainMover : public APawn
 
 public:
 	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* cubeMesh;
+	UStaticMeshComponent* cubeMesh;
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -29,11 +30,14 @@ private:
 	UPROPERTY(EditAnywhere)
 	bool invertAxis = false;
 
-	UPROPERTY(EditAnywhere)
-	float jumpForce = 200.f;
-
 	UPROPERTY(EditAnywhere, Category = "Shooting")
 	TSubclassOf<ABullet> bulletClass;
+
+	UPROPERTY(EditAnywhere, Category = "Jumping")
+		float jumpForce = 200.f;
+
+	UFloatingPawnMovement* pawn;
+
 
 public:
 	// Sets default values for this pawn's properties
@@ -59,4 +63,8 @@ public:
 	void Jump();
 
 	void Shoot();
+
+	UFUNCTION()
+	void OnCollision(AActor* SelfActor, 
+		AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 };

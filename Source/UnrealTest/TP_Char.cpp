@@ -3,6 +3,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Enemy.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "TP_Char.h"
 
@@ -51,8 +52,13 @@ void ATP_Char::Tick(float DeltaTime)
 	
 	FCollisionQueryParams collisionParams;
 	if (GetWorld()->LineTraceSingleByChannel(hit, startLocation,
-		(GetActorForwardVector() * lineTraceDistance) + startLocation, ECC_WorldStatic, collisionParams))
+		(GetActorForwardVector() * lineTraceDistance)
+		+ startLocation, ECC_WorldStatic, collisionParams))
 	{
+		if (AEnemy* enemyClass = Cast<AEnemy>(hit.GetActor()))
+		{
+			enemyClass->ChangeColor(FVector(0.f, 1.f, 0.f));
+		}
 		GEngine->AddOnScreenDebugMessage(-1, 1.f,
 			FColor::Red, FString::Printf(TEXT("Collided with %s"),
 				*hit.GetActor()->GetName()));

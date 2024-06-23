@@ -11,12 +11,18 @@ class UNREALTEST_API AEnemy : public AActor
 {
 	GENERATED_BODY()
 	
+private:
+	UMaterialInstanceDynamic* dynamicMat;
+
 public:	
 	// Sets default values for this actor's properties
 	AEnemy();
 
 	UPROPERTY(EditAnywhere, Category = "Components")
 	UStaticMeshComponent* enemyMesh;
+
+	UPROPERTY(EditAnywhere, Category = "Materials")
+	UMaterialInterface* mat;
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,4 +32,5 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void ChangeColor(FVector color);
 };

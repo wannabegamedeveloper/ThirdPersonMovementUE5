@@ -17,7 +17,6 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -25,5 +24,13 @@ void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AEnemy::ChangeColor(FVector color)
+{
+	dynamicMat = UMaterialInstanceDynamic::Create(mat, this);
+	dynamicMat->SetVectorParameterValue("Color", color);
+
+	enemyMesh->SetMaterial(0, dynamicMat);
 }
 
